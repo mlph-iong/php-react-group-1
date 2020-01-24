@@ -14,8 +14,8 @@ function Index() {
     library.add(fab, faCalendar)
     return (
         <BrowserRouter>
+            <Navigation />
             <div className="container">
-                <Navigation />
                 <Main />
             </div>
         </BrowserRouter>
