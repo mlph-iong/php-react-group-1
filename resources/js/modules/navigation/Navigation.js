@@ -9,7 +9,7 @@ const NavBar = () => {
     return (
     <Navbar bg="dark" variant="dark" expand="lg">
         <div className="container">
-            <Navbar.Brand href="#home"><FontAwesomeIcon icon='calendar'></FontAwesomeIcon></Navbar.Brand>
+            <Navbar.Brand><Link to='/'><FontAwesomeIcon icon='calendar'></FontAwesomeIcon></Link></Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="mr-auto">
