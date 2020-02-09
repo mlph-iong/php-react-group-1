@@ -5,8 +5,6 @@ import Home from './home/Home'
 import Login from './login/Login'
 import Registration from './registration/Registration'
 import Users from './users/Users'
-import Venues from './venues/Venues'
-import Reservations from './reservations/Reservations'
 
 export default function Main() {
   return (
@@ -15,8 +13,6 @@ export default function Main() {
       <Route path="/login" component={Login} />
       <Route path="/register" component={Registration} />
       <Route path="/users" component={Users} />
-      <Route path="/venues" component={Venues} />
-      <Route path="/reservations" component={Reservations} />
     </Switch>
   )
 }
