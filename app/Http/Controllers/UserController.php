@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use App\Http\Requests\RegistrationFormRequest;
 
-class ApiController extends Controller
+class UserController extends Controller
 {
     public $loginAfterSignUp = false;
 
@@ -20,7 +20,7 @@ class ApiController extends Controller
         if (!$token = JWTAuth::attempt($input)) {
             return response()->json([
                 'success' => false,
-                'message' => 'Invalid Email or Password',
+                'message' => 'Invalid Username or Password',
             ], 401);
         }
 
