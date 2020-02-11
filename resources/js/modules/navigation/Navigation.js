@@ -15,8 +15,6 @@ const NavBar = () => {
                 <Nav className="mr-auto">
                     <Link to='/' className="nav-link">Home</Link>
                     <Link to='/users' className="nav-link">Users</Link>
-                    <Link to='/venues' className="nav-link">Venues</Link>
-                    <Link to='/reservations' className="nav-link">Reservations</Link>
                 </Nav>
                 <Link to="/login"><Button variant="outline-primary" className='login-btn'>Log In</Button></Link>
                 <Link to="/register"><Button variant="outline-info">Register</Button></Link>
