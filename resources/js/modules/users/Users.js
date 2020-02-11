@@ -1,9 +1,8 @@
 import React, {Component} from "react";
 import { Link } from 'react-router-dom'
-import UserPage from './UserPage'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {Table} from 'react-bootstrap'
-import Confirm from '../confirm/Confirm'
+import Modal from '../modal/Modal'
 class Users extends Component {
 
     constructor() {
@@ -11,7 +10,8 @@ class Users extends Component {
         this.state = {
             users: [],
             currentUser: null,
-            showDeleteModal: false
+            showDeleteModal: false,
+            showViewModal: false
         }
     }
 
@@ -25,8 +25,11 @@ class Users extends Component {
         })
     }
 
-    selectUser(user) {
-        this.setState({currentUser: user})
+    openViewModal(user) {
+        this.setState({
+            currentUser: user,
+            showViewModal: true
+        })
     }
 
     deleteUser(user) {
@@ -43,7 +46,7 @@ class Users extends Component {
         })
     }
 
-    showModal(user) {
+    openDeleteModal(user) {
             this.setState({
                 showDeleteModal: true,
                 currentUser: user
@@ -51,7 +54,10 @@ class Users extends Component {
     }
 
     hideModal() {
-        this.setState({showDeleteModal: false});
+        this.setState({
+            showDeleteModal: false,
+            showViewModal: false
+        });
     }
 
     getUsers() {
@@ -59,23 +65,40 @@ class Users extends Component {
             return (
                 <tbody>
                     <tr>
-                        <td><a onClick={() => this.selectUser(user)} key={user.id}>{user.name}</a></td>
+                        <td><a onClick={() => this.openViewModal(user)} key={user.id}>{user.name}</a></td>
                         <td>{user.username}</td>
-                        <td><FontAwesomeIcon icon="trash" onClick={() => this.showModal(user)}></FontAwesomeIcon></td>
+                        <td><FontAwesomeIcon icon="trash" onClick={() => this.openDeleteModal(user)}></FontAwesomeIcon></td>
                     </tr>
                 </tbody>
             )
         })
     }
 
+    openEditModal(user) {
+        console.log('Test')
+    }
+
     render () {
         return (
             <div>
-                {this.state.currentUser ? <UserPage user={this.state.currentUser} /> : null}
+                {this.state.currentUser ? 
+                    <Modal 
+                        show={this.state.showViewModal}
+                        handleClose={() => this.hideModal()} 
+                        handleOk={() => this.openEditModal(this.state.currentUser)}
+                        handleOkText={'Edit'}>
+                        Name: <h2>{this.state.currentUser.name}</h2>
+                        <p>Username: {this.state.currentUser.username}</p>
+                    </Modal>
+                : null}
                 {this.state.currentUser ?
-                    <Confirm show={this.state.showDeleteModal} handleClose={() => this.hideModal()} handleOk={() => this.deleteUser(this.state.currentUser)}>
+                    <Modal 
+                        show={this.state.showDeleteModal} 
+                        handleClose={() => this.hideModal()} 
+                        handleOk={() => this.deleteUser(this.state.currentUser)}
+                        handleOkText={'Yes'}>
                         <p>Delete {this.state.currentUser.name}?</p>
-                    </Confirm>
+                    </Modal>
                 : null}
                 <Link to='/add-user' className="add-user-link">Add User</Link>
                 
