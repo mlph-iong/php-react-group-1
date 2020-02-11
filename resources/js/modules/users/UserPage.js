@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import "./Users.css";
 
 const UserPage = ({user}) => {
@@ -9,7 +9,7 @@ const UserPage = ({user}) => {
     
     return (
         <div className='user-div'>
-            <p>Name: <h2>{user.name}</h2></p>
+            Name: <h2>{user.name}</h2>
             <p>Username: {user.username}</p>
         </div>
     )
