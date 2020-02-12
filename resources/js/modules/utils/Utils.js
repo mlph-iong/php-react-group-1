@@ -27,7 +27,16 @@ function Logout() {
             });
 }
 
+function GetUserDetails() {
+    return axios
+            .get('api/users/current-user' + '?token=' + localStorage.getItem("usertoken"))
+            .then(response => {
+                return response;
+            });
+}
+
 export {
     IsLoggedInChecker,
-    Logout
+    Logout,
+    GetUserDetails
 }

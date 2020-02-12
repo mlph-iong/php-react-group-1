@@ -14,23 +14,36 @@ class Login extends Component {
       this.onChange = this.onChange.bind(this)
       this.onSubmit = this.onSubmit.bind(this)
   }
-  
+
   onChange(e) {
       this.setState({ [e.target.name]: e.target.value })
   }
+
   onSubmit(e) {
       e.preventDefault()
+      let continueRequest = false;
       const user = {
           username: this.state.username,
           password: this.state.password
       }
-      this.login(user).then(res => {
+      if( this.state.username.length == 0 && this.state.password.length == 0 ) {
+        this.setState({ errors: { "message": "Username and Password are required." } })
+      } else if( this.state.username.length == 0 ) {
+        this.setState({ errors: { "message": "Username is required." } })
+      } else if(this.state.password.length == 0 ) {
+        this.setState({ errors: { "message": "Password is required." } })
+      } else {
+          continueRequest = true;
+      }
+      if( continueRequest ) {
+        this.login(user).then(res => {
             if (res) {
                 this.forceUpdate()
                 this.props.history.push('/')
                 window.location.reload()
             }
-      })
+        })
+      }
   }
 
   login (user) {

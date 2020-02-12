@@ -1,24 +1,32 @@
 import React, { Component } from 'react'
-import {Navbar, Nav} from 'react-bootstrap'
+import { withRouter } from "react-router-dom";
+import {Navbar, Nav, NavDropdown} from 'react-bootstrap'
 import Button from 'react-bootstrap/Button';
 import { Link } from 'react-router-dom'
-import * as jwt_decode from 'jwt-decode';
 import "./Navigation.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { IsLoggedInChecker, Logout } from "../utils/Utils";
+import { IsLoggedInChecker, Logout, GetUserDetails } from "../utils/Utils";
 
 class NavBar extends Component {
     constructor() {
         super()
         this.state = {
-            update: true,
+            userDetails: null,
         }
         self = this;
+        if(IsLoggedInChecker()) {
+            GetUserDetails().then((response) => {
+                if(response.data.success) {
+                    self.setState({ userDetails: response.data.data });
+                }
+            });
+        }
     }
 
     logout() {
         Logout().then(response => {
-            self.setState({ update: true })
+            self.props.history.push("/")
+            window.location.reload()
         });
     }
 
@@ -39,7 +47,17 @@ class NavBar extends Component {
                                     <Link to='/' className="nav-link">Home</Link>
                                     <Link to='/users' className="nav-link">Users</Link>
                                 </Nav>
-                                <Button variant="outline-info" onClick={ this.logout }>Logout</Button>
+                                <Navbar.Text className="px-2">
+                                        Signed in as:
+                                </Navbar.Text>
+                                <NavDropdown title={ self.state.userDetails != null? self.state.userDetails.name : '' } id="collasible-nav-dropdown">
+                                    <NavDropdown.Item href="#action/3.1">My Account</NavDropdown.Item>
+                                    <NavDropdown.Divider />
+                                    <div className="mx-2">
+                                        <Button variant="outline-info" size="sm" block>Change Password</Button>
+                                        <Button variant="outline-info" size="sm" onClick={ this.logout } block>Logout</Button>
+                                    </div>
+                                </NavDropdown>
                             </Navbar.Collapse>
         }
 
@@ -58,9 +76,9 @@ class NavBar extends Component {
 class Navigation extends Component {
     render() {
         return (
-            <NavBar />
+            <NavBar history={ this.props.history }/>
         )
     }
 }
 
-export default Navigation
+export default withRouter(Navigation)
