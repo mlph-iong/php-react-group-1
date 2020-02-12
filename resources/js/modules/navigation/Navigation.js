@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import * as jwt_decode from 'jwt-decode';
 import "./Navigation.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { IsLoggedInChecker, Logout } from "../utils/Utils";
 
 class NavBar extends Component {
     constructor() {
@@ -16,32 +17,14 @@ class NavBar extends Component {
     }
 
     logout() {
-        return axios
-            .get('api/logout' + '?token=' + localStorage.getItem("usertoken"))
-            .then(response => {
-                localStorage.removeItem("usertoken")
-            })
-            .catch(err => {
-                localStorage.removeItem("usertoken")
-            }).then(response => {
-                self.setState({ update: true })
-            });
+        Logout().then(response => {
+            self.setState({ update: true })
+        });
     }
 
     render() {
         let navBarContent
-        let decoded
-        let isLoggedIn
-        try{
-            decoded = jwt_decode(localStorage.getItem("usertoken"))
-            if ( Date.now() >= decoded.exp * 1000) {
-                isLoggedIn = false
-            } else {
-                isLoggedIn = true
-            }
-        } catch (e){
-            isLoggedIn = false
-        }
+        let isLoggedIn = IsLoggedInChecker()
         if ( !isLoggedIn ) {
             localStorage.removeItem("usertoken");
             navBarContent = <Navbar.Collapse id="basic-navbar-nav">
