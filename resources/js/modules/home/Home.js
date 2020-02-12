@@ -4,13 +4,12 @@ class Home extends Component {
 
   constructor(props) {
     super(props);
-    
   }
 
   render () {
     return (
       <div>
-        <h1>Events Organizer</h1>
+        <h1>Hey There! Good to see you!</h1>
       </div>
     )
   }
