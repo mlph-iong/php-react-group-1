@@ -46,6 +46,7 @@ class NavBar extends Component {
                                 <Nav className="mr-auto">
                                     <Link to='/' className="nav-link">Home</Link>
                                     <Link to='/users' className="nav-link">Users</Link>
+                                    <Link to='/services' className="nav-link">Services</Link>
                                 </Nav>
                                 <Navbar.Text className="px-2">
                                         Signed in as:
