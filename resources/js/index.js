@@ -17,7 +17,7 @@ function Index() {
     return (
         <BrowserRouter>
             <Navigation />
-            <div className="container">
+            <div className="container mt-4">
                 <Main />
             </div>
         </BrowserRouter>

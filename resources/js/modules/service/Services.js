@@ -64,7 +64,7 @@ class Services extends Component {
     }
 
     convertPrice(price) {
-        return price.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+        return "Php " + price.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
     }
 
     // render services

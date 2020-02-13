@@ -7,7 +7,7 @@ use Auth;
 use App\User;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Exceptions\JWTException;
-use App\Http\Requests\RegistrationFormRequest;
+use App\Http\Requests\EditUserFormRequest;
 
 class UserController extends Controller {
 
@@ -51,9 +51,11 @@ class UserController extends Controller {
 
     public function update(Request $request, $id)
     {
-        // update user
-		$input = $request->all();
-		$user = User::findOrFail($id);
+        $input = $request->all();
+        if( $input['password'] != null ) {
+            $input['password'] = bcrypt($input['password']);
+        }
+        $user = User::findOrFail($id);
 		$user->update($input);
 		return response()->json([
 			'user' => $user,

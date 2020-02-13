@@ -55,7 +55,6 @@ class NavBar extends Component {
                                     <NavDropdown.Item href="#action/3.1">My Account</NavDropdown.Item>
                                     <NavDropdown.Divider />
                                     <div className="mx-2">
-                                        <Button variant="outline-info" size="sm" block>Change Password</Button>
                                         <Button variant="outline-info" size="sm" onClick={ this.logout } block>Logout</Button>
                                     </div>
                                 </NavDropdown>

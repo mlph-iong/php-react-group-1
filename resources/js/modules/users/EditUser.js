@@ -8,6 +8,7 @@ class EditUser extends Component {
         this.state = {
             name: '',
             username: '',
+            password: '',
             errors: {},
             firstLoad: true
         };
@@ -27,9 +28,12 @@ class EditUser extends Component {
             .put(`/api/users/${this.props.match.params.id}`, {
                 name: this.state.name,
                 username: this.state.username,
+                password: this.state.password
             })
             .then(response => {
                 this.props.history.push('/users');
+            }).catch(err => {
+                this.setState({errors: err.response.data.errors})
             });
     }
     // get all users from backend
@@ -37,7 +41,6 @@ class EditUser extends Component {
         axios.get(`/api/users/${this.props.match.params.id}`).then((
             response
         ) =>
-            
             this.setState({
                 user: response.data.user,
                 name: response.data.user.name,
@@ -91,6 +94,17 @@ class EditUser extends Component {
                                 onChange={this.handleChange}
                                 errorMessage={ this.state.errors["username"] }
                             />
+                            <InputHelper 
+                                label="Password"
+                                name="password"
+                                type="password"
+                                className={ this.validatorClass('password') }
+                                placeholder="Password"
+                                value={this.state.password}
+                                onChange={this.handleChange}
+                                errorMessage={ this.state.errors["passsword"] }
+                            />
+                            
                             <button
                                 type="submit"
                                 className="btn btn-lg btn-primary btn-block">

@@ -55,7 +55,6 @@ class AddUserPage extends Component {
             .then(() => {
                 this.setState({firstLoad: false});
                 if (successRegistration) {
-                    console.log("Hell oworld this is before push");
                     this.props.history.push(this.props.linkAfterSubmit)
                 }
             })
