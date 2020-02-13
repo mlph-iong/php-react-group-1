@@ -71,7 +71,12 @@ class Users extends Component {
                 <tr key={user.id}>
                     <td><a onClick={() => this.openViewModal(user)}>{user.name}</a></td>
                     <td>{user.username}</td>
-                    <td><FontAwesomeIcon icon="trash" onClick={() => this.openDeleteModal(user)}></FontAwesomeIcon></td>
+                    <td>
+                        <Link to={`/edit-user/${user.id}`}>
+                            <FontAwesomeIcon icon="pencil-alt"></FontAwesomeIcon>
+                        </Link>
+                        <FontAwesomeIcon icon="trash" onClick={() => this.openDeleteModal(user)}></FontAwesomeIcon>
+                    </td>
                 </tr>
             )
         })
@@ -87,8 +92,11 @@ class Users extends Component {
                             handleClose={() => this.hideModal()} 
                             handleOk={() => this.props.history.push(`/edit-user/${this.state.currentUser.id}`)}
                             handleOkText={'Edit'}>
-                            Name: <h2>{this.state.currentUser.name}</h2>
-                            <p>Username: {this.state.currentUser.username}</p>
+                            <div className='user-div'>
+                                <h2>User Information</h2>
+                                <p>Name: {this.state.currentUser.name}</p>
+                                <p>Username: {this.state.currentUser.username}</p>
+                            </div>
                         </Modal>
                         <Modal 
                             show={this.state.showDeleteModal} 
@@ -99,7 +107,7 @@ class Users extends Component {
                         </Modal>
                     </div>
                 : null}
-                <Link to='/add-user' className="add-user-link">Add User</Link>
+                <Link to='/add-user' className="add-user-link"><Button>Add User</Button></Link>
                 
                 <Table striped bordered hover>
                     <thead>
