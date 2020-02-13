@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {Table} from 'react-bootstrap'
+import {Table, Button} from 'react-bootstrap'
 import Modal from '../modal/Modal'
 
 class Services extends Component {
@@ -70,20 +70,18 @@ class Services extends Component {
     // render services
     renderServices() {
         return this.state.services.map(service => (
-            <tbody>
-                <tr>
-                    <td>{service.name}</td>
-                    <td>{service.description}</td>
-                    <td>{this.convertPrice(service.price)}</td>
-                    <td>
-                        <Link to={`/services-edit/${service.id}/`}>
-                            <FontAwesomeIcon icon="pencil-alt"></FontAwesomeIcon>
-                        </Link>
-                         
-                        <FontAwesomeIcon icon="trash" onClick={() => this.openDeleteModal(service)}></FontAwesomeIcon>
-                    </td>
-                </tr>
-            </tbody>
+            <tr key={service.id}>
+                <td>{service.name}</td>
+                <td>{service.description}</td>
+                <td>{this.convertPrice(service.price)}</td>
+                <td>
+                    <Link to={`/services-edit/${service.id}/`}>
+                        <FontAwesomeIcon icon="pencil-alt"></FontAwesomeIcon>
+                    </Link>
+                        
+                    <FontAwesomeIcon icon="trash" onClick={() => this.openDeleteModal(service)}></FontAwesomeIcon>
+                </td>
+            </tr>
         ));
     }
 
@@ -100,7 +98,7 @@ class Services extends Component {
                         <p>Delete {this.state.currentService.name}?</p>
                     </Modal>
                 :   null}
-                <Link to='/services-add' className="add-user-link">Add Service</Link>
+                <Link to='/services-add' className="add-user-link"><Button>Add Service</Button></Link>
                 
                 <Table striped bordered hover>
                     <thead>
@@ -111,7 +109,9 @@ class Services extends Component {
                             <th></th>
                         </tr>
                     </thead>
-                    {this.renderServices()}
+                    <tbody>
+                        {this.renderServices()}
+                    </tbody>
                 </Table>
             </div>
         )
