@@ -19,15 +19,9 @@ Route::post('register', 'LoginController@register');
 Route::group(['middleware' => 'auth.jwt'], function () {
     Route::get('logout', 'LoginController@logout');
     Route::get('users/current-user', 'UserController@getCurrentUser');
+
+    
 });
 
-Route::get('users', function () {
-    return response(User::all(),200);
-});
-Route::post('users', 'UserController@getUsers');
-
-Route::delete('users/{user}', function($userId) {
-    User::find($userId)->delete();
-    return 204;
-});
-Route::delete('users/{user}', 'UserController@delete');
+Route::get('users', 'UserController@getUsers');
+Route::delete('users/{userId}', 'UserController@delete');
