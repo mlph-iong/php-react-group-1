@@ -30,3 +30,5 @@ Route::delete('users/{user}', function($userId) {
     return 204;
 });
 Route::delete('users/{user}', 'UserController@delete');
+
+Route::resource('services', 'ServiceController');
