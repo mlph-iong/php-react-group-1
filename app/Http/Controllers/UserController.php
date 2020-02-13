@@ -52,11 +52,14 @@ class UserController extends Controller {
     public function update(Request $request, $id)
     {
         $input = $request->all();
+        $user = User::findOrFail($id);
         if( $input['password'] != null ) {
             $input['password'] = bcrypt($input['password']);
+        } else {
+            $input['password'] = $user->password;    
         }
-        $user = User::findOrFail($id);
-		$user->update($input);
+        $user->update($input);
+        
 		return response()->json([
 			'user' => $user,
 		]);
