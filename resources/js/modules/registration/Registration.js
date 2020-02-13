@@ -1,3 +1,4 @@
+/*jslint es6 */
 import React from "react";
 import AddUserPage from "../users/AddUserPage";
 import "./Registration.css";

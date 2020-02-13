@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { withRouter} from 'react-router-dom';
-import InputValidationMessage from "../validationHelper/validationHelper";
+import InputHelper from "../inputHelper/InputHelper";
 
 class AddUserPage extends Component {
 
@@ -27,10 +27,7 @@ class AddUserPage extends Component {
             username: this.state.username,
             password: this.state.password
         }
-        this.create(newUser).then(res => {
-          if (res) {
-          }
-        })
+        this.create(newUser)
     }
 
     create(newUser) {
@@ -75,42 +72,36 @@ class AddUserPage extends Component {
                             <h1 className="h3 mb-3 font-weight-normal">
                                 { this.props.formTitle }
                             </h1>
-                            <div className="form-group">
-                                <label htmlFor="name">Name</label>
-                                <input
-                                    type="text"
-                                    className={"form-control " + this.validatorClass('name') }
-                                    name="name"
-                                    placeholder="Name"
-                                    value={this.state.name}
-                                    onChange={this.onChange}
-                                />
-                                <InputValidationMessage message={this.state.errors["name"]} />
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor="username">Username</label>
-                                <input
-                                    type="text"
-                                    className={"form-control " + this.validatorClass('username') }
-                                    name="username"
-                                    placeholder="Username"
-                                    value={this.state.username}
-                                    onChange={this.onChange}
-                                />
-                                <InputValidationMessage message={this.state.errors["username"]} />
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor="password">Password</label>
-                                <input
-                                    type="password"
-                                    className={"form-control " + this.validatorClass('password') }
-                                    name="password"
-                                    placeholder="Password"
-                                    value={this.state.password}
-                                    onChange={this.onChange}
-                                />
-                                <InputValidationMessage message={this.state.errors["password"]} />
-                            </div>
+                            <InputHelper 
+                                label="Name"
+                                name="name"
+                                type="text"
+                                className={ this.validatorClass('name') }
+                                placeholder="Name"
+                                value={ this.state.name }
+                                onChange={ this.onChange }
+                                errorMessage={ this.state.errors["name"] }
+                            />
+                            <InputHelper 
+                                label="Username"
+                                name="username"
+                                type="text"
+                                className={ this.validatorClass('username') }
+                                placeholder="Username"
+                                value={ this.state.username }
+                                onChange={ this.onChange }
+                                errorMessage={ this.state.errors["username"] }
+                            />
+                            <InputHelper 
+                                label="Password"
+                                name="password"
+                                type="password"
+                                className={ this.validatorClass('password') }
+                                placeholder="Password"
+                                value={ this.state.password }
+                                onChange={ this.onChange }
+                                errorMessage={ this.state.errors["password"] }
+                            />
                             <button
                                 type="submit"
                                 className="btn btn-lg btn-primary btn-block">
