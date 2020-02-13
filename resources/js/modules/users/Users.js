@@ -1,8 +1,11 @@
 import React, {Component} from "react";
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {Table} from 'react-bootstrap'
+import {Table, Button} from 'react-bootstrap'
 import Modal from '../modal/Modal'
+import './Users.css'
+import AddUserPage from "../users/AddUserPage";
+import AddUser from '../users/AddUser'
 class Users extends Component {
 
     constructor() {
@@ -11,12 +14,13 @@ class Users extends Component {
             users: [],
             currentUser: null,
             showDeleteModal: false,
-            showViewModal: false
+            showViewModal: false,
+            showEditModal: false
         }
     }
 
     componentDidMount() {
-        fetch('/api/users')
+        fetch('/api/users?token=' + localStorage.getItem("usertoken"))
         .then(response => {
             return response.json();
         })
@@ -33,17 +37,21 @@ class Users extends Component {
     }
 
     deleteUser(user) {
-        fetch('api/users/' + user.id, {method: 'delete'})
+        fetch('api/users/' + user.id + '?token=' + localStorage.getItem("usertoken"), {method: 'delete'})
         .then(response => {
             var array = this.state.users.filter(function(x) {
                 return x !== user
             });
             this.setState({
                 users: array,
-                currentUser: null,
+                currentUser: null, 
                 showDeleteModal: false
             });
         })
+    }
+
+    saveUser(user) {
+
     }
 
     openDeleteModal(user) {
@@ -56,7 +64,8 @@ class Users extends Component {
     hideModal() {
         this.setState({
             showDeleteModal: false,
-            showViewModal: false
+            showViewModal: false,
+            showEditModal: false
         });
     }
 
@@ -75,32 +84,49 @@ class Users extends Component {
     }
 
     openEditModal(user) {
-        console.log('Test')
+        this.setState({
+            showEditModal: true,
+            currentUser: user
+        });
+    }
+
+    openAddModal() {
+        console.log('Hello')
     }
 
     render () {
         return (
             <div>
-                {this.state.currentUser ? 
-                    <Modal 
-                        show={this.state.showViewModal}
-                        handleClose={() => this.hideModal()} 
-                        handleOk={() => this.openEditModal(this.state.currentUser)}
-                        handleOkText={'Edit'}>
-                        Name: <h2>{this.state.currentUser.name}</h2>
-                        <p>Username: {this.state.currentUser.username}</p>
-                    </Modal>
-                : null}
                 {this.state.currentUser ?
-                    <Modal 
-                        show={this.state.showDeleteModal} 
-                        handleClose={() => this.hideModal()} 
-                        handleOk={() => this.deleteUser(this.state.currentUser)}
-                        handleOkText={'Yes'}>
-                        <p>Delete {this.state.currentUser.name}?</p>
-                    </Modal>
+                    <div>
+                        <Modal 
+                            show={this.state.showViewModal}
+                            handleClose={() => this.hideModal()} 
+                            handleOk={() => this.openEditModal(this.state.currentUser)}
+                            handleOkText={'Edit'}>
+                            Name: <h2>{this.state.currentUser.name}</h2>
+                            <p>Username: {this.state.currentUser.username}</p>
+                        </Modal>
+                        <Modal 
+                            show={this.state.showDeleteModal} 
+                            handleClose={() => this.hideModal()} 
+                            handleOk={() => this.deleteUser(this.state.currentUser)}
+                            handleOkText={'Yes'}>
+                            <p>Delete {this.state.currentUser.name}?</p>
+                        </Modal>
+                        <Modal 
+                            show={this.state.showEditModal} 
+                            handleClose={() => this.hideModal()} 
+                            handleOk={() => this.saveUser(this.state.currentUser)}
+                            handleOkText={'Save'}>
+                            <AddUser 
+                                currentUser={this.state.currentUser}
+                            />
+                        </Modal>
+                    </div>
                 : null}
                 <Link to='/add-user' className="add-user-link">Add User</Link>
+                <Button variant='info' onClick={() => this.openAddModal()}>Add User</Button>
                 
                 <Table striped bordered hover>
                     <thead>

@@ -13,6 +13,15 @@ class AddUserPage extends Component {
             errors: {},
             firstLoad: true
         }
+        if (props.currentUser !== undefined) {
+            this.state = {
+                name: props.currentUser.name,
+                username: props.currentUser.username,
+                password: props.currentUser.password,
+                errors: {},
+                firstLoad: true
+            }
+        }
         this.onChange = this.onChange.bind(this)
         this.onSubmit = this.onSubmit.bind(this)
     }
@@ -20,6 +29,7 @@ class AddUserPage extends Component {
     onChange (e) {
         this.setState({ [e.target.name]: e.target.value })
     }
+
     onSubmit (e) {
         e.preventDefault()
         const newUser = {
@@ -70,7 +80,7 @@ class AddUserPage extends Component {
                     <div className="col-md-6 mt-5 mx-auto">
                         <form noValidate onSubmit={this.onSubmit}>
                             <h1 className="h3 mb-3 font-weight-normal">
-                                { this.props.formTitle }
+                                { this.props.currentUser !== undefined ? 'Edit User' : this.props.formTitle }
                             </h1>
                             <InputHelper 
                                 label="Name"
@@ -92,21 +102,25 @@ class AddUserPage extends Component {
                                 onChange={ this.onChange }
                                 errorMessage={ this.state.errors["username"] }
                             />
-                            <InputHelper 
-                                label="Password"
-                                name="password"
-                                type="password"
-                                className={ this.validatorClass('password') }
-                                placeholder="Password"
-                                value={ this.state.password }
-                                onChange={ this.onChange }
-                                errorMessage={ this.state.errors["password"] }
-                            />
-                            <button
-                                type="submit"
-                                className="btn btn-lg btn-primary btn-block">
-                                    { this.props.formSubmitButtonName }
-                            </button>
+                            {this.props.currentUser === undefined ? 
+                                <div>
+                                    <InputHelper 
+                                        label="Password"
+                                        name="password"
+                                        type="password"
+                                        className={ this.validatorClass('password') }
+                                        placeholder="Password"
+                                        value={ this.state.password }
+                                        onChange={ this.onChange }
+                                        errorMessage={ this.state.errors["password"] }
+                                    />
+                                    <button
+                                        type="submit"
+                                        className="btn btn-lg btn-primary btn-block">
+                                            { this.props.formSubmitButtonName }
+                                    </button>
+                                </div>
+                            : null}
                         </form>
                     </div>
                 </div>
