@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {Table} from 'react-bootstrap'
-import {Modal} from '../modal/Modal'
+import Modal from '../modal/Modal'
 
 class Services extends Component {
     constructor() {
@@ -18,7 +18,7 @@ class Services extends Component {
     // get all services from backend
     getServices() {
         axios.get('api/services').then((
-            response // console.log(response.data.services)
+            response
         ) =>
             this.setState({
                 services: [...response.data.services]
@@ -41,20 +41,12 @@ class Services extends Component {
             var array = this.state.services.filter(function(x) {
                 return x !== service
             });
-            this.setState({services: array});
+            this.setState({
+                services: array,
+                currentService: null,
+                showDeleteModal: false
+            });
         })
-    }
-
-    // render services
-    renderServices() {
-        return this.state.services.map(service => (
-            <tbody>
-                <tr>
-                    <td><a onClick={() => this.openViewModal(service)} key={service.id}>{service.name}</a></td>
-                    <td><FontAwesomeIcon icon="trash" onClick={() => this.openDeleteModal(service)}></FontAwesomeIcon></td>
-                </tr>
-            </tbody>
-        ));
     }
 
     hideModal() {
@@ -64,26 +56,58 @@ class Services extends Component {
         });
     }
 
-    openEditModal(service) {
-        console.log('Test')
+    openDeleteModal(service) {
+        this.setState({
+            showDeleteModal: true,
+            currentService: service
+        });
     }
 
-    openViewModal(service) {
-        this.setState({
-            currentService: service,
-            showViewModal: true
-        })
+    convertPrice(price) {
+        return price.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
     }
+
+    // render services
+    renderServices() {
+        return this.state.services.map(service => (
+            <tbody>
+                <tr>
+                    <td>{service.name}</td>
+                    <td>{service.description}</td>
+                    <td>{this.convertPrice(service.price)}</td>
+                    <td>
+                        <Link to={`/services-edit/${service.id}/`}>
+                            <FontAwesomeIcon icon="pencil-alt"></FontAwesomeIcon>
+                        </Link>
+                         
+                        <FontAwesomeIcon icon="trash" onClick={() => this.openDeleteModal(service)}></FontAwesomeIcon>
+                    </td>
+                </tr>
+            </tbody>
+        ));
+    }
+
 
     render() {
         return (
             <div>
-                <Link to='/services-add' className="add-service-link">Add Service</Link>
+                {this.state.currentService ? 
+                    <Modal 
+                        show={this.state.showDeleteModal} 
+                        handleClose={() => this.hideModal()} 
+                        handleOk={() => this.deleteService(this.state.currentService)}
+                        handleOkText={'Yes'}>
+                        <p>Delete {this.state.currentService.name}?</p>
+                    </Modal>
+                :   null}
+                <Link to='/services-add' className="add-user-link">Add Service</Link>
                 
                 <Table striped bordered hover>
                     <thead>
                         <tr>
                             <th>Name</th>
+                            <th>Description</th>
+                            <th>Price</th>
                             <th></th>
                         </tr>
                     </thead>

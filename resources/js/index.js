@@ -7,13 +7,13 @@ import ReactDOM from 'react-dom';
 import Main from './modules/Main';
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fab } from '@fortawesome/free-brands-svg-icons'
-import { faCalendar } from '@fortawesome/free-solid-svg-icons'
-import { faTrash } from '@fortawesome/free-solid-svg-icons'
+import { faCalendar, faPencilAlt, faTrash } from '@fortawesome/free-solid-svg-icons'
 
 
 function Index() {
     library.add(fab, faCalendar)
     library.add(fab, faTrash)
+    library.add(fab, faPencilAlt)
     return (
         <BrowserRouter>
             <Navigation />

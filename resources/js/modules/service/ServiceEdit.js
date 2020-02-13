@@ -1,12 +1,17 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import InputHelper from "../inputHelper/InputHelper";
 
 class ServiceEdit extends Component {
     constructor(props) {
         super(props);
         this.state = {
             name: '',
-            service: ''
+            description: '',
+            price: '',
+            service: '',
+            errors: {},
+            firstLoad: true
         };
         // bind
         this.handleChange = this.handleChange.bind(this);
@@ -14,32 +19,33 @@ class ServiceEdit extends Component {
     }
     // handle change
     handleChange(e) {
-        this.setState({
-            name: e.target.value
-        });
-        // console.log('onChange', this.state.name);
+        this.setState({ [e.target.name]: e.target.value })
     }
     // create handleSubmit method right after handleChange method
     handleSubmit(e) {
         // stop browser's default behaviour of reloading on form submit
         e.preventDefault();
         axios
-            .put(`api/services/${this.props.match.params.id}`, {
-                name: this.state.name
+            .put(`/api/services/${this.props.match.params.id}`, {
+                name: this.state.name,
+                description: this.state.description,
+                price: this.state.price
             })
             .then(response => {
-                console.log('successfully edited the service');
-                this.props.history.push('/');
+                this.props.history.push('/services');
             });
     }
     // get all services from backend
     getServices() {
-        axios.get(`/services/${this.props.match.params.id}/edit`).then((
-            response // console.log(response.data.services)
+        axios.get(`/api/services/${this.props.match.params.id}/edit`).then((
+            response
         ) =>
+            
             this.setState({
                 service: response.data.service,
-                name: response.data.service.name
+                name: response.data.service.name,
+                description: response.data.service.description,
+                price: response.data.service.price
             })
         );
     }
@@ -48,32 +54,63 @@ class ServiceEdit extends Component {
         this.getServices();
     }
 
+    validatorClass(inputName) {
+        let returnClass;
+        if(this.state.firstLoad) {
+            returnClass = "";
+        } else if(this.state.errors[inputName] != null) {
+            returnClass = "is-invalid";
+        } else {
+            returnClass = "is-valid";
+        }
+        return returnClass;
+    }
+
     render() {
-        console.log(this.props.match.params.id);
         return (
             <div className="container">
-                <div className="row justify-content-center">
-                    <div className="col-md-8">
-                        <div className="card">
-                            <div className="card-header">Edit Service</div>
-                            <div className="card-body">
-                                <form onSubmit={this.handleSubmit}>
-                                    <div className="form-group">
-                                        <textarea
-                                            onChange={this.handleChange}
-                                            value={this.state.name}
-                                            className="form-control"
-                                            rows="5"
-                                            maxLength="255"
-                                            required
-                                        />
-                                    </div>
-                                    <button type="submit" className="btn btn-primary">
-                                        Edit Service
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
+                <div className="row">
+                    <div className="col-md-6 mt-5 mx-auto">
+                        <form noValidate onSubmit={this.handleSubmit}>
+                            <h1 className="h3 mb-3 font-weight-normal">
+                                Edit Service
+                            </h1>
+                            <InputHelper 
+                                label="Name"
+                                name="name"
+                                type="text"
+                                className={ this.validatorClass('name') }
+                                placeholder="Name"
+                                value={this.state.name}
+                                onChange={this.handleChange}
+                                errorMessage={ this.state.errors["name"] }
+                            />
+                            <InputHelper 
+                                label="Description"
+                                name="description"
+                                type="text"
+                                className={ this.validatorClass('description') }
+                                placeholder="Description"
+                                value={this.state.description}
+                                onChange={this.handleChange}
+                                errorMessage={ this.state.errors["description"] }
+                            />
+                            <InputHelper 
+                                label="Price"
+                                name="price"
+                                type="text"
+                                className={ this.validatorClass('descrippricetion') }
+                                placeholder="Price"
+                                value={this.state.price}
+                                onChange={this.handleChange}
+                                errorMessage={ this.state.errors["price"] }
+                            />
+                            <button
+                                type="submit"
+                                className="btn btn-lg btn-primary btn-block">
+                                    Save
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>

@@ -51,7 +51,9 @@ class ServiceController extends Controller
         
         $service = new Service();
 		$service -> create([
-			'name' => $request->name,
+            'name' => $request->name,
+            'description' => $request->description,
+            'price' => $request->price
         ]);
 
         return response()->json([

@@ -20,7 +20,7 @@ export default function Main() {
       <Route path="/add-user" component={AddUser} />
       <Route path="/services" component={Services} />
       <Route path="/services-add" component={ServiceAdd} exact={true} />
-      <Route path="/services/edit/:id" component={ServiceEdit} exact={true} />
+      <Route path="/services-edit/:id" component={ServiceEdit} exact={true} />
     </Switch>
   )
 }
