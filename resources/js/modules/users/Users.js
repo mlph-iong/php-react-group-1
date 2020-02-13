@@ -68,13 +68,11 @@ class Users extends Component {
     getUsers() {
         return this.state.users.map(user => {
             return (
-                <tbody>
-                    <tr>
-                        <td><a onClick={() => this.openViewModal(user)} key={user.id}>{user.name}</a></td>
-                        <td>{user.username}</td>
-                        <td><FontAwesomeIcon icon="trash" onClick={() => this.openDeleteModal(user)}></FontAwesomeIcon></td>
-                    </tr>
-                </tbody>
+                <tr key={user.id}>
+                    <td><a onClick={() => this.openViewModal(user)}>{user.name}</a></td>
+                    <td>{user.username}</td>
+                    <td><FontAwesomeIcon icon="trash" onClick={() => this.openDeleteModal(user)}></FontAwesomeIcon></td>
+                </tr>
             )
         })
     }
@@ -111,7 +109,9 @@ class Users extends Component {
                             <th></th>
                         </tr>
                     </thead>
-                    {this.getUsers()}
+                    <tbody>
+                        {this.getUsers()}
+                    </tbody>
                 </Table>
             </div>
         )
