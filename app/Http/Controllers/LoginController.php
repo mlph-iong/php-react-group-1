@@ -11,6 +11,9 @@ use App\Http\Requests\RegistrationFormRequest;
 class LoginController extends Controller
 {
     public $loginAfterSignUp = false;
+    private const SUCCESS = "success";
+    private const MESSAGE = "message";
+    private const TOKEN = "token";
 
     public function login(Request $request)
     {
@@ -19,14 +22,14 @@ class LoginController extends Controller
 
         if (!$token = JWTAuth::attempt($input)) {
             return response()->json([
-                'success' => false,
-                'message' => 'Invalid Username or Password',
+                self::SUCCESS => false,
+                self::MESSAGE => 'Invalid Username or Password',
             ], 401);
         }
 
         return response()->json([
-            'success' => true,
-            'token' => $token,
+            self::SUCCESS => true,
+            self::TOKEN => $token,
         ]);
     }
     
@@ -34,20 +37,20 @@ class LoginController extends Controller
     {
         $responseVal = null;
         $this->validate($request, [
-            'token' => 'required'
+            self::TOKEN => 'required'
         ]);
 
         try {
            JWTAuth::invalidate($request->token);
 
             $responseVal = response()->json([
-                'success' => true,
-                'message' => 'User logged out successfully'
+                self::SUCCESS => true,
+                self::MESSAGE => 'User logged out successfully'
             ]);
         } catch (JWTException $exception) {
             $responseVal = response()->json([
-                'success' => false,
-                'message' => 'Sorry, the user cannot be logged out'
+                self::SUCCESS => false,
+                self::MESSAGE => 'Sorry, the user cannot be logged out'
             ], 500);
         }
         
@@ -67,7 +70,7 @@ class LoginController extends Controller
         }
 
         return response()->json([
-            'success'   =>  true,
+            self::SUCCESS   =>  true,
             'data'      =>  $user
         ], 200);
     }

@@ -18,6 +18,7 @@ Route::post('register', 'LoginController@register');
 
 Route::group(['middleware' => 'auth.jwt'], function () {
     Route::get('logout', 'LoginController@logout');
+    Route::get('users/current-user', 'UserController@getCurrentUser');
 });
 
 Route::get('users', function () {
