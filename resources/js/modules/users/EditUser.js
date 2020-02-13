@@ -2,14 +2,12 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import InputHelper from "../inputHelper/InputHelper";
 
-class ServiceEdit extends Component {
+class EditUser extends Component {
     constructor(props) {
         super(props);
         this.state = {
             name: '',
-            description: '',
-            price: '',
-            service: '',
+            username: '',
             errors: {},
             firstLoad: true
         };
@@ -26,32 +24,30 @@ class ServiceEdit extends Component {
         // stop browser's default behaviour of reloading on form submit
         e.preventDefault();
         axios
-            .put(`/api/services/${this.props.match.params.id}`, {
+            .put(`/api/users/${this.props.match.params.id}`, {
                 name: this.state.name,
-                description: this.state.description,
-                price: this.state.price
+                username: this.state.username,
             })
             .then(response => {
-                this.props.history.push('/services');
+                this.props.history.push('/users');
             });
     }
-    // get all services from backend
-    getServices() {
-        axios.get(`/api/services/${this.props.match.params.id}/edit`).then((
+    // get all users from backend
+    getUsers() {
+        axios.get(`/api/users/${this.props.match.params.id}`).then((
             response
         ) =>
             
             this.setState({
-                service: response.data.service,
-                name: response.data.service.name,
-                description: response.data.service.description,
-                price: response.data.service.price
+                user: response.data.user,
+                name: response.data.user.name,
+                username: response.data.user.username,
             })
         );
     }
     // lifecycle method
     componentWillMount() {
-        this.getServices();
+        this.getUsers();
     }
 
     validatorClass(inputName) {
@@ -73,7 +69,7 @@ class ServiceEdit extends Component {
                     <div className="col-md-6 mt-5 mx-auto">
                         <form noValidate onSubmit={this.handleSubmit}>
                             <h1 className="h3 mb-3 font-weight-normal">
-                                Edit Service
+                                Edit User
                             </h1>
                             <InputHelper 
                                 label="Name"
@@ -86,24 +82,14 @@ class ServiceEdit extends Component {
                                 errorMessage={ this.state.errors["name"] }
                             />
                             <InputHelper 
-                                label="Description"
-                                name="description"
+                                label="Username"
+                                name="username"
                                 type="text"
-                                className={ this.validatorClass('description') }
-                                placeholder="Description"
-                                value={this.state.description}
+                                className={ this.validatorClass('username') }
+                                placeholder="Username"
+                                value={this.state.username}
                                 onChange={this.handleChange}
-                                errorMessage={ this.state.errors["description"] }
-                            />
-                            <InputHelper 
-                                label="Price"
-                                name="price"
-                                type="text"
-                                className={ this.validatorClass('price') }
-                                placeholder="Price"
-                                value={this.state.price}
-                                onChange={this.handleChange}
-                                errorMessage={ this.state.errors["price"] }
+                                errorMessage={ this.state.errors["username"] }
                             />
                             <button
                                 type="submit"
@@ -118,4 +104,4 @@ class ServiceEdit extends Component {
     }
 }
 
-export default ServiceEdit;
+export default EditUser;

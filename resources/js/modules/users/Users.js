@@ -4,8 +4,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {Table, Button} from 'react-bootstrap'
 import Modal from '../modal/Modal'
 import './Users.css'
-import AddUserPage from "../users/AddUserPage";
-import AddUser from '../users/AddUser'
 class Users extends Component {
 
     constructor() {
@@ -15,7 +13,6 @@ class Users extends Component {
             currentUser: null,
             showDeleteModal: false,
             showViewModal: false,
-            showEditModal: false
         }
     }
 
@@ -65,7 +62,6 @@ class Users extends Component {
         this.setState({
             showDeleteModal: false,
             showViewModal: false,
-            showEditModal: false
         });
     }
 
@@ -83,17 +79,6 @@ class Users extends Component {
         })
     }
 
-    openEditModal(user) {
-        this.setState({
-            showEditModal: true,
-            currentUser: user
-        });
-    }
-
-    openAddModal() {
-        console.log('Hello')
-    }
-
     render () {
         return (
             <div>
@@ -102,7 +87,7 @@ class Users extends Component {
                         <Modal 
                             show={this.state.showViewModal}
                             handleClose={() => this.hideModal()} 
-                            handleOk={() => this.openEditModal(this.state.currentUser)}
+                            handleOk={() => this.props.history.push(`/edit-user/${this.state.currentUser.id}`)}
                             handleOkText={'Edit'}>
                             Name: <h2>{this.state.currentUser.name}</h2>
                             <p>Username: {this.state.currentUser.username}</p>
@@ -114,19 +99,9 @@ class Users extends Component {
                             handleOkText={'Yes'}>
                             <p>Delete {this.state.currentUser.name}?</p>
                         </Modal>
-                        <Modal 
-                            show={this.state.showEditModal} 
-                            handleClose={() => this.hideModal()} 
-                            handleOk={() => this.saveUser(this.state.currentUser)}
-                            handleOkText={'Save'}>
-                            <AddUser 
-                                currentUser={this.state.currentUser}
-                            />
-                        </Modal>
                     </div>
                 : null}
                 <Link to='/add-user' className="add-user-link">Add User</Link>
-                <Button variant='info' onClick={() => this.openAddModal()}>Add User</Button>
                 
                 <Table striped bordered hover>
                     <thead>

@@ -24,5 +24,7 @@ Route::group(['middleware' => 'auth.jwt'], function () {
 });
 
 Route::get('users', 'UserController@getUsers');
+Route::get('users/{userId}', 'UserController@show');
 Route::delete('users/{userId}', 'UserController@delete');
+Route::put('users/{userId}', 'UserController@update');
 Route::resource('services', 'ServiceController');

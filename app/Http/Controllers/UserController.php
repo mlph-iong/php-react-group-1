@@ -40,4 +40,23 @@ class UserController extends Controller {
 
          return $responseVal;
     }
+
+    public function show($id)
+    {
+        $user = User::findOrFail($id);
+		return response()->json([
+			'user' => $user,
+		]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        // update user
+		$input = $request->all();
+		$user = User::findOrFail($id);
+		$user->update($input);
+		return response()->json([
+			'user' => $user,
+		]);
+    }
 }
