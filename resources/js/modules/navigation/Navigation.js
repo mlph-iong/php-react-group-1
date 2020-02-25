@@ -6,21 +6,32 @@ import { Link } from 'react-router-dom'
 import "./Navigation.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { IsLoggedInChecker, Logout, GetUserDetails } from "../utils/Utils";
+import axios from 'axios'
 
 class NavBar extends Component {
+
     constructor() {
         super()
         this.state = {
             userDetails: null,
         }
         self = this;
+        this.setGlobalAuthorizationBearer();
+        this.getUserDetails();
+    }
+
+    getUserDetails() {
         if(IsLoggedInChecker()) {
             GetUserDetails().then((response) => {
                 if(response.data.success) {
-                    self.setState({ userDetails: response.data.data });
+                    this.setState({ userDetails: response.data.data });
                 }
             });
         }
+    }
+
+    setGlobalAuthorizationBearer() {
+        axios.defaults.headers.common['Authorization'] = "Bearer " + localStorage.getItem("usertoken");
     }
 
     logout() {
@@ -51,7 +62,7 @@ class NavBar extends Component {
                                 <Navbar.Text className="px-2">
                                         Signed in as:
                                 </Navbar.Text>
-                                <NavDropdown title={ self.state.userDetails != null? self.state.userDetails.name : '' } id="collasible-nav-dropdown">
+                                <NavDropdown title={ this.state.userDetails != null? this.state.userDetails.name : '' } id="collasible-nav-dropdown">
                                     <NavDropdown.Item href="#action/3.1">My Account</NavDropdown.Item>
                                     <NavDropdown.Divider />
                                     <div className="mx-2">

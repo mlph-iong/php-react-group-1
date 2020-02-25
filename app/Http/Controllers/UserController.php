@@ -22,9 +22,6 @@ class UserController extends Controller {
 
     public function getCurrentUser(Request $request) {
         $responseVal = null;
-        $this->validate($request, [
-            'token' => 'required'
-        ]);
 
         try {
             $responseVal = response()->json([
@@ -56,7 +53,7 @@ class UserController extends Controller {
         if( $input['password'] != null ) {
             $input['password'] = bcrypt($input['password']);
         } else {
-            $input['password'] = $user->password;    
+            $input['password'] = $user->password;       
         }
         $user->update($input);
         

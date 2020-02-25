@@ -29,7 +29,7 @@ function Logout() {
 
 function GetUserDetails() {
     return axios
-            .get('api/users/current-user' + '?token=' + localStorage.getItem("usertoken"))
+            .get('api/users/current-user')
             .then(response => {
                 return response;
             });
