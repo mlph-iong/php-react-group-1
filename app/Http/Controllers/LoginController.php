@@ -63,6 +63,8 @@ class LoginController extends Controller
         $user->name = $request->name;
         $user->username = $request->username;
         $user->password = bcrypt($request->password);
+        $user->email = $request->email;
+        $user->contact_no = $request->contact_no;
         $user->save();
 
         if ($this->loginAfterSignUp) {

@@ -1,15 +1,12 @@
 import React from "react";
-import AddUserPage from "../users/AddUserPage";
+import AddEditUser from "../users/AddEditUser"
 import "./Users.css";
 
 export default function AddUser(props) {
     
     return (
-        <AddUserPage
+        <AddEditUser
             formTitle="Add User"
-            formSubmitButtonName="Add User"
-            linkAfterSubmit="/users"
-            currentUser={props.currentUser}
         />
     )
 };

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use JWTAuth;
 use App\Service;
 use Illuminate\Http\Request;
 
@@ -20,7 +21,7 @@ class ServiceController extends Controller
      */
     public function index(Request $request, Service $service)
     {
-        $allServices = $service::all();
+        $allServices = $service::with("user")->get();
         return response()->json([
             'services' => $allServices,
         ]);
@@ -53,7 +54,8 @@ class ServiceController extends Controller
 		$service -> create([
             'name' => $request->name,
             'description' => $request->description,
-            'price' => $request->price
+            'price' => $request->price,
+            'user_id' => $request->user_id
         ]);
 
         return response()->json([

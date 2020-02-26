@@ -19,6 +19,7 @@ class CreateServicesTable extends Migration
             $table->string('name');
             $table->string('description');
             $table->double('price');
+            $table->bigInteger('user_id');
         });
     }
 
