@@ -71,6 +71,8 @@ class Users extends Component {
                 <tr key={user.id}>
                     <td><a onClick={() => this.openViewModal(user)}>{user.name}</a></td>
                     <td>{user.username}</td>
+                    <td>{user.email}</td>
+                    <td>{user.contact_no}</td>
                     <td>
                         <Link to={`/edit-user/${user.id}`}>
                             <FontAwesomeIcon icon="pencil-alt"></FontAwesomeIcon>
@@ -114,6 +116,8 @@ class Users extends Component {
                         <tr>
                             <th>Name</th>
                             <th>Username</th>
+                            <th>Email</th>
+                            <th>Contact No</th>
                             <th></th>
                         </tr>
                     </thead>

@@ -74,6 +74,9 @@ class Services extends Component {
                 <td>{service.name}</td>
                 <td>{service.description}</td>
                 <td>{this.convertPrice(service.price)}</td>
+                <td>{service.user.name}</td>
+                <td>{service.user.email}</td>
+                <td>{service.user.contact_no}</td>
                 <td>
                     <Link to={`/services-edit/${service.id}/`}>
                         <FontAwesomeIcon icon="pencil-alt"></FontAwesomeIcon>
@@ -106,6 +109,9 @@ class Services extends Component {
                             <th>Name</th>
                             <th>Description</th>
                             <th>Price</th>
+                            <th>Service Provider</th>
+                            <th>Email</th>
+                            <th>Contact No</th>
                             <th></th>
                         </tr>
                     </thead>
