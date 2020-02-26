@@ -1,6 +1,6 @@
 import * as jwt_decode from 'jwt-decode';
 
-function IsLoggedInChecker() {
+function isLoggedInChecker() {
     "use strict"
     let isLoggedIn
     try{
@@ -16,7 +16,7 @@ function IsLoggedInChecker() {
     return isLoggedIn
 }
 
-function Logout() {
+function logout() {
     return axios
             .get('api/logout' + '?token=' + localStorage.getItem("usertoken"))
             .then(response => {
@@ -27,7 +27,7 @@ function Logout() {
             });
 }
 
-function GetUserDetails() {
+function getUserDetails() {
     return axios
             .get('/api/users/current-user')
             .then(response => {
@@ -36,7 +36,7 @@ function GetUserDetails() {
 }
 
 export {
-    IsLoggedInChecker,
-    Logout,
-    GetUserDetails
+    isLoggedInChecker,
+    logout,
+    getUserDetails
 }
