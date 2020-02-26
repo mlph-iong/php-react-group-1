@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {Table, Button} from 'react-bootstrap'
 import Modal from '../modal/Modal'
+import {GetUserDetails} from '../utils/Utils';
 
 class Services extends Component {
     constructor() {
@@ -13,6 +14,11 @@ class Services extends Component {
             showDeleteModal: false,
             showViewModal: false
         }
+        GetUserDetails().then(response => {
+            this.setState({
+                user_id: response.data.data.id
+            })
+        })
     }
 
     // get all services from backend
@@ -30,10 +36,6 @@ class Services extends Component {
     componentWillMount() {
         this.getServices();
     }
-
-    // selectService(service) {
-    //     this.setState({currentService: service})
-    // }
 
     deleteService(service) {
         fetch('api/services/' + service.id, {method: 'delete'})
@@ -77,12 +79,15 @@ class Services extends Component {
                 <td>{service.user.name}</td>
                 <td>{service.user.email}</td>
                 <td>{service.user.contact_no}</td>
-                <td>
+                <td>{this.state.user_id === service.user.id ?
+                    <span>
                     <Link to={`/services-edit/${service.id}/`}>
                         <FontAwesomeIcon icon="pencil-alt"></FontAwesomeIcon>
                     </Link>
                         
                     <FontAwesomeIcon icon="trash" onClick={() => this.openDeleteModal(service)}></FontAwesomeIcon>
+                    </span>
+                    : null }
                 </td>
             </tr>
         ));

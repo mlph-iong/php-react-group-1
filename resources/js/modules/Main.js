@@ -10,6 +10,7 @@ import EditUser from './users/EditUser'
 import Services from './service/Services';
 import ServiceAdd from './service/ServiceAdd';
 import ServiceEdit from './service/ServiceEdit';
+import Newsfeed from './newsfeed/Newsfeed'
 
 export default function Main() {
   return (
@@ -23,6 +24,7 @@ export default function Main() {
       <Route path="/services" component={Services} />
       <Route path="/services-add" component={ServiceAdd} exact={true} />
       <Route path="/services-edit/:id" component={ServiceEdit} exact={true} />
+      <Route path="/newsfeed" component={Newsfeed} />
     </Switch>
   )
 }
