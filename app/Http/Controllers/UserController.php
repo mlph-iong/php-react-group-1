@@ -24,9 +24,11 @@ class UserController extends Controller {
         $responseVal = null;
 
         try {
+            $user = JWTAuth::toUser(JWTAuth::getToken());
+            $userFullDetails = $user::with("roles")->findOrFail($user->id);
             $responseVal = response()->json([
                 'success' => true,
-                'data' => JWTAuth::toUser(JWTAuth::getToken())
+                'data' => $userFullDetails
             ]);
          } catch (JWTException $exception) {
             $responseVal = response()->json([
@@ -63,7 +65,7 @@ class UserController extends Controller {
     }
 
     public function testUser(Request $requeust) {
-        $user = User::find(3);
+        $user = User::find(1);
         // $user->roles()->attach(1);
         print($user->roles()->first());
     }
