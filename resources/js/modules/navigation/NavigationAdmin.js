@@ -10,6 +10,7 @@ export default function NavigationPublic(props) {
                 <Link to='/' className="nav-link">Home</Link>
                 <Link to='/users' className="nav-link">Users</Link>
                 <Link to='/services' className="nav-link">Services</Link>
+                <Link to='/newsfeed' className="nav-link">Newsfeed</Link>
             </Nav>
             <Navbar.Text className="px-2">
                     Signed in as:
