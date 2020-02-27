@@ -61,4 +61,10 @@ class UserController extends Controller {
 			'user' => $user,
 		]);
     }
+
+    public function testUser(Request $requeust) {
+        $user = User::find(3);
+        // $user->roles()->attach(1);
+        print($user->roles()->first());
+    }
 }
