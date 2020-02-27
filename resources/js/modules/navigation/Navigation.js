@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom'
 import "./Navigation.css";
 import NavigationPublic from "./NavigationPublic"
 import NavigationAdmin from "./NavigationAdmin"
+import NavigationServiceProvider from "./NavigationServiceProvider"
+import NavigationCustomer from "./NavigationCustomer"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { isLoggedInChecker, logout, getUserDetails } from "../utils/Utils"
 import axios from 'axios'
@@ -49,9 +51,26 @@ class NavBar extends Component {
             localStorage.removeItem("usertoken");
             navBarContent = <NavigationPublic />
         } else {
-            navBarContent = <NavigationAdmin 
-                                name={ this.state.userDetails != null? this.state.userDetails.name : '' } 
-                                logoutHander={ this.logout } />
+            if (this.state.userDetails != null) {
+                if (this.state.userDetails.roles.some(x => x.key === 'ADMIN')) {
+                    navBarContent = <NavigationAdmin 
+                            roles={this.state.userDetails != null ? this.state.userDetails.roles : ''}
+                            name={ this.state.userDetails != null ? this.state.userDetails.name : '' } 
+                            logoutHander={ this.logout } />
+                } else if (this.state.userDetails.roles.some(x => x.key === 'SERVICE_PROVIDER')) {
+                    navBarContent = <NavigationServiceProvider 
+                            roles={this.state.userDetails != null ? this.state.userDetails.roles : ''}
+                            name={ this.state.userDetails != null ? this.state.userDetails.name : '' } 
+                            logoutHander={ this.logout } />
+                } else if (this.state.userDetails.roles.some(x => x.key === 'CUSTOMER')) {
+                    navBarContent = <NavigationCustomer 
+                            roles={this.state.userDetails != null ? this.state.userDetails.roles : ''}
+                            name={ this.state.userDetails != null ? this.state.userDetails.name : '' } 
+                            logoutHander={ this.logout } />
+                }
+            }
+            
+            
         }
 
         return (
