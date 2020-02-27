@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use JWTAuth;
 use App\User;
+use App\Role;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use App\Http\Requests\RegistrationFormRequest;
@@ -66,6 +67,15 @@ class LoginController extends Controller
         $user->email = $request->email;
         $user->contact_no = $request->contact_no;
         $user->save();
+
+        if($request->role == config('enums.userRoles.SERVICE_PROVIDER') 
+            || $request->role == config('enums.userRoles.ADMIN')
+            || $request->role == config('enums.userRoles.CUSTOMER') ) {
+            $role = Role::where('key', '=', $request->role)->first();
+            print($role);
+            $user->roles()->attach($role);
+            print("werty");
+        }
 
         if ($this->loginAfterSignUp) {
             return $this->login($request);

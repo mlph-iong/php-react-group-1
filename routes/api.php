@@ -27,3 +27,4 @@ Route::group(['middleware' => 'auth.jwt'], function () {
     Route::resource('services', 'ServiceController');
 });
 
+Route::get('testUser', 'UserController@testUser');

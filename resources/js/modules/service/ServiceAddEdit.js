@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import InputHelper from "../inputHelper/InputHelper";
-import {GetUserDetails} from '../utils/Utils';
+import {getUserDetails} from '../utils/Utils';
 
 class ServiceAddEdit extends Component {
     constructor(props) {
@@ -28,7 +28,7 @@ class ServiceAddEdit extends Component {
                 })
             );
         }
-        GetUserDetails().then(response => {
+        getUserDetails().then(response => {
             parentThis.setState({
                 user_id: response.data.data.id
             })
