@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {Table, Button} from 'react-bootstrap'
 import Modal from '../modal/Modal'
-import {GetUserDetails} from '../utils/Utils';
+import {getUserDetails} from '../utils/Utils';
 
 class Services extends Component {
     constructor() {
@@ -14,7 +14,7 @@ class Services extends Component {
             showDeleteModal: false,
             showViewModal: false
         }
-        GetUserDetails().then(response => {
+        getUserDetails().then(response => {
             this.setState({
                 user_id: response.data.data.id
             })

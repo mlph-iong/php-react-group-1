@@ -28,7 +28,7 @@ class ServiceAddEdit extends Component {
                 })
             );
         }
-        GetUserDetails().then(response => {
+        getUserDetails().then(response => {
             parentThis.setState({
                 user_id: response.data.data.id
             })
