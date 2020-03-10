@@ -16,7 +16,7 @@ function isLoggedInChecker() {
     return isLoggedIn
 }
 
-function logout() {
+function logoutUser() {
     return axios
             .get('api/logout' + '?token=' + localStorage.getItem("usertoken"))
             .then(response => {
@@ -37,6 +37,6 @@ function getUserDetails() {
 
 export {
     isLoggedInChecker,
-    logout,
+    logoutUser,
     getUserDetails
 }
