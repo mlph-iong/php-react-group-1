@@ -12,11 +12,13 @@ import ServiceAdd from './service/ServiceAdd';
 import ServiceEdit from './service/ServiceEdit';
 import Newsfeed from './newsfeed/Newsfeed'
 
-export default function Main() {
+export default function Main(props) {
   return (
     <Switch>
       <Route exact path="/" component={Home} />
-      <Route path="/login" component={Login} />
+      <Route path='/login' render={
+            () => <Login changeIsLoggedIn={ props.changeIsLoggedIn }/>
+          } />
       <Route path="/register" component={Registration} />
       <Route path="/users" component={Users} />
       <Route path="/add-user" component={AddUser} />

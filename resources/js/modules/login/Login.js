@@ -2,18 +2,19 @@ import React, { Component } from "react";
 import "./Login.css";
 import InputHelper from "../inputHelper/InputHelper";
 import InputValidationMessage from "../validationHelper/validationHelper";
+import { withRouter } from "react-router-dom"
 import axios from 'axios';
 
 class Login extends Component {
-  constructor() {
-      super()
-      this.state = {
-          username: '',
-          password: '',
-          errors: {}
-      }
-      this.onChange = this.onChange.bind(this)
-      this.onSubmit = this.onSubmit.bind(this)
+  constructor(props) {
+    super(props);
+    this.state = {
+        username: '',
+        password: '',
+        errors: {}
+    }
+    this.onChange = this.onChange.bind(this)
+    this.onSubmit = this.onSubmit.bind(this)
   }
 
   onChange(e) {
@@ -39,9 +40,8 @@ class Login extends Component {
       if( continueRequest ) {
         this.login(user).then(res => {
             if (res) {
-                this.forceUpdate()
-                this.props.history.push('/')
-                window.location.reload()
+                self.props.history.push("/")
+                this.props.changeIsLoggedIn(true);
             }
         })
       }
@@ -106,4 +106,4 @@ class Login extends Component {
         )
     }
 }
-export default Login
+export default withRouter(Login)

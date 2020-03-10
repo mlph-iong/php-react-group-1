@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { withRouter } from "react-router-dom"
-import { Navbar } from 'react-bootstrap'
+import { Navbar, Nav, NavDropdown } from 'react-bootstrap'
+import Button from 'react-bootstrap/Button'
 import { Link } from 'react-router-dom'
 import "./Navigation.css";
 import NavigationPublic from "./NavigationPublic"
@@ -8,69 +9,71 @@ import NavigationAdmin from "./NavigationAdmin"
 import NavigationServiceProvider from "./NavigationServiceProvider"
 import NavigationCustomer from "./NavigationCustomer"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { isLoggedInChecker, logout, getUserDetails } from "../utils/Utils"
+import { logoutUser, getUserDetails } from "../utils/Utils"
 import axios from 'axios'
 
 class NavBar extends Component {
 
-    constructor() {
+    constructor(props) {
         super()
         this.state = {
-            userDetails: null,
+            userDetails: null
         }
         self = this;
-        this.setGlobalAuthorizationBearer();
-        this.getUserDetails();
+    }
+
+    componentDidMount() {
+        if(this.state.userDetails == null && this.props.isLoggedIn) {
+            this.getUserDetails();
+        }            
     }
 
     getUserDetails() {
-        if(isLoggedInChecker()) {
-            getUserDetails().then((response) => {
-                if(response.data.success) {
-                    this.setState({ userDetails: response.data.data });
-                }
-            });
-        }
-    }
-
-    setGlobalAuthorizationBearer() {
-        axios.defaults.headers.common['Authorization'] = "Bearer " + localStorage.getItem("usertoken");
+        getUserDetails().then((response) => {
+            if(response.data.success) {
+                this.setState({ userDetails: response.data.data });
+            }
+        }).catch(() => {
+            this.props.changeIsLoggedIn(false);
+        })
     }
 
     logout() {
-        logout().then(response => {
+        logoutUser().then(response => {
             self.props.history.push("/")
-            window.location.reload()
+            self.props.changeIsLoggedIn(false);
         });
     }
 
     render() {
         let navBarContent
-        let isLoggedIn = isLoggedInChecker()
-        if ( !isLoggedIn ) {
-            localStorage.removeItem("usertoken");
+        if ( !this.props.isLoggedIn ) {
             navBarContent = <NavigationPublic />
         } else {
-            if (this.state.userDetails != null) {
+            let innerNavBarContent
+            if ( this.state.userDetails != null ) {
                 if (this.state.userDetails.roles.some(x => x.key === 'ADMIN')) {
-                    navBarContent = <NavigationAdmin 
-                            roles={this.state.userDetails != null ? this.state.userDetails.roles : ''}
-                            name={ this.state.userDetails != null ? this.state.userDetails.name : '' } 
-                            logoutHander={ this.logout } />
+                    innerNavBarContent = <NavigationAdmin  />
                 } else if (this.state.userDetails.roles.some(x => x.key === 'SERVICE_PROVIDER')) {
-                    navBarContent = <NavigationServiceProvider 
-                            roles={this.state.userDetails != null ? this.state.userDetails.roles : ''}
-                            name={ this.state.userDetails != null ? this.state.userDetails.name : '' } 
-                            logoutHander={ this.logout } />
+                    innerNavBarContent = <NavigationServiceProvider />
                 } else if (this.state.userDetails.roles.some(x => x.key === 'CUSTOMER')) {
-                    navBarContent = <NavigationCustomer 
-                            roles={this.state.userDetails != null ? this.state.userDetails.roles : ''}
-                            name={ this.state.userDetails != null ? this.state.userDetails.name : '' } 
-                            logoutHander={ this.logout } />
+                    innerNavBarContent = <NavigationCustomer  />
                 }
+                navBarContent =
+                    <Navbar.Collapse id="basic-navbar-nav">
+                        { innerNavBarContent }
+                        <Navbar.Text className="px-2">
+                                Signed in as:
+                        </Navbar.Text>
+                        <NavDropdown title={ this.state.userDetails != null ? this.state.userDetails.name : '' }  id="collasible-nav-dropdown">
+                            <NavDropdown.Item href="#action/3.1">My Account</NavDropdown.Item>
+                            <NavDropdown.Divider />
+                            <div className="mx-2">
+                                <Button variant="outline-info" size="sm" onClick={ this.logout } block>Logout</Button>
+                            </div>
+                        </NavDropdown>
+                    </Navbar.Collapse>
             }
-            
-            
         }
 
         return (
@@ -86,9 +89,9 @@ class NavBar extends Component {
 }
 
 class Navigation extends Component {
-    render() {
+    render(props) {
         return (
-            <NavBar history={ this.props.history }/>
+            <NavBar history={ this.props.history } changeIsLoggedIn={ this.props.changeIsLoggedIn } isLoggedIn = { this.props.isLoggedIn }/>
         )
     }
 }
